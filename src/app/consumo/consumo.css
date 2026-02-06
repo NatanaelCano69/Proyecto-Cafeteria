@@ -1,0 +1,41 @@
+.container {
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.scanner {
+  opacity: 0;
+  position: absolute;
+}
+
+.card {
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.success {
+  background: #e8f5e9;
+  border: 2px solid #2e7d32;
+}
+
+.error {
+  background: #ffebee;
+  border: 2px solid #c62828;
+}
+
+.ok {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.hint {
+  margin-top: 30px;
+  color: #777;
+}

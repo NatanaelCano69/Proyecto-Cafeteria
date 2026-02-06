@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Cafetería</h1>
+
+  <!-- Input invisible para lector -->
+  <input
+    type="text"
+    #codigo
+    autofocus
+    class="scanner"
+    (keyup.enter)="registrarConsumo(codigo.value); codigo.value=''"
+  />
+
+  <div *ngIf="resultado" class="card success">
+    <h2>{{ resultado.usuario }}</h2>
+    <p>Consumo: <strong>${{ resultado.monto }}</strong></p>
+    <p>Deuda total: <strong>${{ resultado.deuda_total }}</strong></p>
+    <span class="ok">✔ Consumo registrado</span>
+  </div>
+
+  <div *ngIf="error" class="card error">
+    <span>❌ {{ error }}</span>
+  </div>
+
+  <p class="hint">Escanee la credencial del usuario</p>
+</div>
