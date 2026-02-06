@@ -1,6 +1,6 @@
-import { AdminComponent } from './../../admin/admin/admin';
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
+import {AdminComponent} from "./admin/admin";
 import { ConsumoComponent } from './consumo/consumo';
 
 
