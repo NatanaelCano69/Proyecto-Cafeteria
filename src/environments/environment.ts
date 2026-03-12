@@ -1,3 +1,3 @@
 export const environment = {
-  API_URL: './CafeteriaBackend/api'
+  API_URL: './backend/api'
 };
