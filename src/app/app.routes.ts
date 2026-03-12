@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { Routes } from '@angular/router';
+import {Component} from '@angular/core';
+import {Routes} from '@angular/router';
 import {AdminComponent} from "./admin/admin";
-import { ConsumoComponent } from './consumo/consumo';
+import {ConsumoComponent} from './consumo/consumo';
 
 
 export const routes: Routes = [
@@ -17,5 +17,9 @@ export const routes: Routes = [
     path: 'admin',
     pathMatch: 'full',
     component: AdminComponent,
+  },
+  {
+    path: '**',
+    redirectTo : 'consumo'
   }
 ];

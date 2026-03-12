@@ -1,24 +1,23 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  private api = 'http://localhost:3001/api';
-
   constructor(private http: HttpClient) { }
 
   // Registrar usuario
   crearUsuario(data: any) {
-    return this.http.post(`${this.api}/usuarios`, data);
+    return this.http.post(`${environment.API_URL}/usuarios`, data);
   }
 
   // Obtener usuarios con deuda y consumos
   obtenerUsuarios() {
-    return this.http.get<any[]>(`${this.api}/usuarios`);
+    return this.http.get<any[]>(`${environment.API_URL}/usuarios`);
   }
 
   // Reporte general
@@ -27,14 +26,14 @@ export class AdminService {
     // and `/admin/reporte` is the new endpoint.
     // If `API_URL` is a new variable, it needs to be declared.
     // For now, I'll use `this.api` and the new path from the instruction.
-    return this.http.get(`${this.api}/reportes`); // Modified URL and removed <any>
+    return this.http.get(`${environment.API_URL}/reportes`); // Modified URL and removed <any>
   }
 
   obtenerUltimosConsumos(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3001/api/consumo/ultimos');
+    return this.http.get<any[]>(`${environment.API_URL}/consumo/ultimos`);
   }
 
   obtenerHistorialUsuario(usuarioId: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/consumo?usuario=${usuarioId}`);
+    return this.http.get<any>(`${environment.API_URL}/consumo?usuario=${usuarioId}`);
   }
 }
