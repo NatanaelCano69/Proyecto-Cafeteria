@@ -68,10 +68,56 @@ export class AdminComponent implements OnInit, OnDestroy {
           }
         });
       });
+
+      this.webSocketService.listen('error_reportado').subscribe(() => {
+        this.ngZone.run(() => {
+          console.log('[Admin] Error reportado event received');
+          this.reproducirSonidoAlarma();
+          this.mostrarAlertaError();
+        });
+      });
+
       console.log('[Admin] Socket.IO suscripción iniciada');
     } catch (e) {
       console.error('[Admin] Socket.IO subscription error', e);
     }
+  }
+
+  reproducirSonidoAlarma() {
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+      
+      const audioCtx = new AudioContextClass();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // Pitch
+      
+      // Volume fade out
+      gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 1);
+    } catch (e) {
+      console.error('Error playing sound', e);
+    }
+  }
+
+  mostrarAlertaError() {
+    this.errorMessage = "¡Atención! Se ha reportado un problema en la terminal de consumo.";
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      if (this.errorMessage === "¡Atención! Se ha reportado un problema en la terminal de consumo.") {
+        this.errorMessage = '';
+        this.cdr.detectChanges();
+      }
+    }, 10000); // 10 seconds duration
   }
 
   cargarUsuarios() {

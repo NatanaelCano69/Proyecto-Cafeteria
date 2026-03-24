@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-
+import { WebSocketService } from '../services/websocket.service';
 
 @Component({
   selector: 'app-consumo',
@@ -16,7 +16,11 @@ export class ConsumoComponent implements OnInit, AfterViewInit, OnDestroy {
   error: string | null = null;
   @ViewChild('codigo', { static: true }) codigoInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
+    private webSocketService: WebSocketService
+  ) {}
 
   ngOnInit(): void {
   }
@@ -26,7 +30,7 @@ export class ConsumoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Socket cleanup handled by service or not necessary here if service is singleton
+    // Cleanup is handled by the shared service.
   }
 
   registrarConsumo(codigo: string) {
@@ -80,5 +84,22 @@ export class ConsumoComponent implements OnInit, AfterViewInit, OnDestroy {
   onBlur() {
     // Keep focus on input for scanner
     setTimeout(() => this.focusCodigo(), 100);
+  }
+
+  reportarError() {
+    this.webSocketService.emit('reportar_error', {});
+    
+    // Configura un mensaje en la UI para darle feedback al usuario
+    this.error = "Reporte enviado a administración correctamente.";
+    this.resultado = null;
+    this.cdr.detectChanges();
+    this.focusCodigo();
+
+    setTimeout(() => {
+      if (this.error === "Reporte enviado a administración correctamente.") {
+        this.error = null;
+        this.cdr.detectChanges();
+      }
+    }, 4000);
   }
 }
